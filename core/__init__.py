@@ -1,0 +1,1 @@
+# core의 config.py에는 DB URL을 반환하는 클래스가 포함되어있다
