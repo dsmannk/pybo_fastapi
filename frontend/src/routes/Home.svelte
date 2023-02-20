@@ -1,7 +1,7 @@
 <script>
     import fastapi from "../lib/api"
     import { link } from 'svelte-spa-router'
-    import { page, is_login } from "../lib/store.js"
+    import { page, keyword, is_login } from "../lib/store.js"
     import moment from 'moment/min/moment-with-locales'
     moment.locale('ko')
 
@@ -9,6 +9,7 @@
     let size = 10
     //let page = 0
     let total = 0
+    let kw = ''
     // $: 기호는 반응형 변수가 된다. 즉, total 변수의 값이 API 호출로 인해 그 값이 변하면 total_page 변수의 값도 실시간으로 재 계산된다는 의미
     $: total_page = Math.ceil(total/size)
 
@@ -16,10 +17,12 @@
         let params = {
             page: $page,
             size: size,
+            keyword: $keyword,
         }
         fastapi('get', '/api/question/list', params, (json) => {
             question_list = json.question_list
             total = json.total
+            kw = $keyword
         })
 
         // fetch("http://127.0.0.1:8000/api/question/list").then((response) => {
@@ -31,10 +34,24 @@
 
     // $: 기호는 변수 뿐만 아니라 함수나 구문 앞에 추가하여 사용할 수 있다.
     // $: get_question_list($page)의 의미는 page 값이 변경될 경우 get_question_list 함수도 다시 호출하라는 의미이다.
-    $: $page, get_question_list()
+    $: $page, $keyword, get_question_list()
 </script>
 
 <div class="container my-3">
+    <div class="row my-3">
+        <div class="col-6">
+            <a use:link href="/question-create"
+                class="btn btn-primary {$is_login ? '' : 'disabled'}">질문 등록하기</a>
+        </div>
+        <div class="col-6">
+            <div class="input-group">
+                <input type="text" class="form-control" bind:value="{kw}">
+                <button class="btn btn-outline-secondary" on:click={() => {$keyword = kw, $page = 0}}>
+                    찾기
+                </button>
+            </div>
+        </div>
+    </div>
     <table class="table">
         <thead>
         <tr class="text-center table-dark">

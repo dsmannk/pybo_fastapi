@@ -15,8 +15,6 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi_sqlalchemy import db
 from core.config import settings
 
-from models import User
-
 #from . import model
 #from .database import engine
 #MYSQL_URL = settings.DATABASE_URL

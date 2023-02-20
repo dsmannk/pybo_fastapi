@@ -11,6 +11,7 @@ const persist_storage = (key, initValue) => {
 
 // 스벨트 스토어 - https://svelte.dev/tutorial/writable-stores
 export const page = persist_storage("page", 0)
+export const keyword = persist_storage("keyword", "")
 // 3가지 로그인 정보는 브라우저를 새로고침 하더라도 유지
 //  - access_token - 액세스 토큰
 //  - username - 사용자명
